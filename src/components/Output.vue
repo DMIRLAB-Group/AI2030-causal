@@ -1,7 +1,7 @@
 <template>
   <section>
     <template v-for="(item, index) in showList" :key="index">
-      <div class="content" :style="{ height: showType === 'Patents' ? '120px' : '240px' }">
+      <div class="content">
         <div class="left">
           <p>{{ item.date }}</p>
           <el-tag :type="getTagType(item)">{{ item.status }}</el-tag>
