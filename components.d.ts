@@ -12,7 +12,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AsideInfo: typeof import('./src/components/AsideInfo.vue')['default']
-    ElAside: typeof import('element-plus/es')['ElAside']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
