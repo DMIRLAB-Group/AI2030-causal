@@ -1,27 +1,27 @@
 <template>
   <section>
     <template v-for="(item, index) in showList" :key="index">
-      <div
-        class="content"
-        :style="{ height: showType === 'Patents' ? '120px' : '240px' }"
-      >
+      <div class="content" :style="{ height: showType === 'Patents' ? '120px' : '240px' }">
         <div class="left">
           <p>{{ item.date }}</p>
           <el-tag :type="getTagType(item)">{{ item.status }}</el-tag>
+          <a v-if="item.link" :href="item.link" target="_blank" rel="noopener" class="recommend-btn left-btn"
+            >成果推荐</a
+          >
         </div>
         <div class="main">
           <template v-if="item.paperUrl">
             <a :href="item.paperUrl" target="_blank" class="link">
               <h2 class="title">{{ item.title }}</h2>
               <p class="authors">{{ item.author }}</p>
-              <p class="abstract">{{ item.abstract }}</p>
+              <p class="abstract">{{ getIntro(item) }}</p>
             </a>
           </template>
           <template v-else>
             <div class="no-link">
               <h2 class="title">{{ item.title }}</h2>
               <p class="authors">{{ item.author }}</p>
-              <p class="abstract">{{ item.abstract }}</p>
+              <p class="abstract">{{ getIntro(item) }}</p>
             </div>
           </template>
         </div>
@@ -35,24 +35,27 @@
 
 <script>
 export default {
-  name: "paper",
+  name: 'paper',
   props: {
     showList: { type: Array, default: () => [] },
-    showType: { type: String, default: "" },
+    showType: { type: String, default: '' },
   },
   methods: {
     getImgUrl(name) {
       try {
         return new URL(`../assets/img/paperImg/${name}`, import.meta.url).href;
       } catch (e) {
-        return "";
+        return '';
       }
+    },
+    getIntro(item) {
+      return (item && (item.intro_cn || item.abstract || item.intro)) || '';
     },
     getTagType(item) {
       const t = item && item.status_color;
-      const allowed = ["primary", "success", "warning", "info", "danger"];
+      const allowed = ['primary', 'success', 'warning', 'info', 'danger'];
       if (allowed.includes(t)) return t;
-      return "info";
+      return 'info';
     },
   },
 };
@@ -64,7 +67,6 @@ export default {
   margin-left: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  height: 240px;
 }
 .content .left {
   width: 80px;
@@ -74,6 +76,39 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-right: 10px;
+  margin-top: 20px;
+}
+.content .left p {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+}
+.content .left .el-tag {
+  display: inline-block;
+  width: 68px;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 4px 0;
+}
+.content .left .left-btn {
+  margin-top: 8px;
+  padding: 0;
+  width: 68px;
+  height: 24px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #1f2d3d;
+  background: #fff;
+  border: 1px solid rgba(44, 108, 246, 0.12);
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(44, 108, 246, 0.04);
+}
+.content .left .left-btn:hover {
+  background: #f7fbff;
+  transform: translateY(-1px);
 }
 .content .right {
   width: 280px;
@@ -84,13 +119,9 @@ export default {
   align-items: center;
 }
 .main {
-  height: 100%;
+  min-height: 100%;
   flex: 1;
   padding: 0 20px;
-}
-.link {
-  display: block;
-  height: 100%;
 }
 .title {
   font-weight: 700;
@@ -100,7 +131,6 @@ export default {
   -webkit-line-clamp: 2; /* 显示行数 */
   -webkit-box-orient: vertical;
   line-height: 1.3em;
-  height: 2.6em; /* 行高乘以显示行数 */
 }
 .authors {
   font-weight: 400;
@@ -113,7 +143,10 @@ export default {
   -webkit-line-clamp: 4; /* 显示行数 */
   -webkit-box-orient: vertical;
   line-height: 1.3em;
-  height: 5.2em; /* 行高乘以显示行数 */
+  color: #555;
+  font-size: 13px;
+  margin-top: 6px;
+  padding-bottom: 20px;
 }
 .content img {
   width: 100%;
@@ -121,5 +154,27 @@ export default {
 a {
   color: inherit;
   text-decoration: none;
+}
+.external-links {
+  margin-top: 8px;
+}
+.recommend-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #1f2d3d;
+  background: linear-gradient(180deg, #fff 0%, #f7fbff 100%);
+  border: 1px solid rgba(44, 108, 246, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(44, 108, 246, 0.06);
+  text-decoration: none;
+}
+.recommend-btn::before {
+  display: none;
+}
+.recommend-btn:hover {
+  transform: translateY(-1px);
 }
 </style>
