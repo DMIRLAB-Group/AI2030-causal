@@ -5,7 +5,7 @@ import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 export default defineConfig({
-  base: '/dmir/',
+  base: '/AI2030-causal/',
   plugins: [
     vue(),
     AutoImport({
